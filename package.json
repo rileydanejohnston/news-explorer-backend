@@ -25,6 +25,8 @@
   "dependencies": {
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "mongoose": "^6.1.6",
+    "validator": "^13.7.0"
   }
 }
