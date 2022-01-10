@@ -1,0 +1,24 @@
+{
+  "name": "news-explorer-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js",
+    "start": "app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rileydanejohnston/news-explorer-backend.git"
+  },
+  "author": "Riley Johnston",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rileydanejohnston/news-explorer-backend/issues"
+  },
+  "homepage": "https://github.com/rileydanejohnston/news-explorer-backend#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
