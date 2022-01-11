@@ -1,4 +1,5 @@
 const express = require('express');
+const helmet = require('helmet');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const { signup } = require('./controllers/users');
@@ -12,6 +13,9 @@ const { PORT = 3000 } = process.env;
 
 // need to create app variable
 const app = express();
+
+// helmet - security
+app.use(helmet());
 
 // parse incoming requests with JSON
 app.use(express.json());
