@@ -3,8 +3,11 @@ const helmet = require('helmet');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const { signup, signin } = require('./controllers/users');
-const { validateSignup } = require('./middlewares/validateUsers');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const {
+  validateSignup,
+  validateSignin,
+} = require('./middlewares/validateUsers');
 
 // connect DB
 mongoose.connect('mongodb://localhost:27017/news-explorer');
@@ -20,7 +23,7 @@ app.use(express.json());  // parse incoming requests with JSON
 app.use(requestLogger);
 
 app.post('/signup', validateSignup, signup);
-app.post('/signin', signin);
+app.post('/signin', validateSignin, signin);
 
 app.use(errorLogger);
 app.use(errors());        // celebrate error handler
