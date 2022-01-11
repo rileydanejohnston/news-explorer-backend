@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { signup } = require('./controllers/users');
+const { validateSignup } = require('./middlewares/validateUsers');
 
 // connect DB
 mongoose.connect('mongodb://localhost:27017/news-explorer');
@@ -14,7 +15,7 @@ const app = express();
 // parse incoming requests with JSON
 app.use(express.json());
 
-app.post('/signup', signup);
+app.post('/signup', validateSignup, signup);
 
 // need to listen on a port
 app.listen(PORT, () => {
