@@ -1,6 +1,37 @@
 const Users = require('../models/user');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const ErrorManager = require('../errors/ErrorManager');
+
+module.exports.signin = (req, res, next) => {
+  const { email, password } = req.body;
+
+  // search for email -> return password pls
+  Users.findOne({ email }).select('+password')
+    .then((user) => {
+
+      // if email isn't found, throw error ?
+      if (!user) {
+        return Promise.reject(new ErrorManager(404, 'Sign in failed. Email was not found.'));
+      }
+      return bcrypt.compare(password, user.password);
+    })
+    .then((matched) => {
+      // password didn't match
+      if (!matched) {
+        return Promise.reject(new ErrorManager(403, 'Sign in failed. Password is incorrect.'));
+      }
+      // create a token with the user's id in there
+      const token = jwt.sign(
+        { _id: matched._id },
+        'some-secret-key',
+        { expiresIn: '7d' }
+      );
+
+      res.status(200).send({ token });
+    })
+    .catch((next));
+}
 
 module.exports.signup = (req, res, next) => {
   const { email, password, name } = req.body;

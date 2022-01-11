@@ -2,7 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
-const { signup } = require('./controllers/users');
+const { signup, signin } = require('./controllers/users');
 const { validateSignup } = require('./middlewares/validateUsers');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -20,6 +20,7 @@ app.use(express.json());  // parse incoming requests with JSON
 app.use(requestLogger);
 
 app.post('/signup', validateSignup, signup);
+app.post('/signin', signin);
 
 app.use(errorLogger);
 app.use(errors());        // celebrate error handler
