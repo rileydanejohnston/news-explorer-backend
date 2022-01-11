@@ -3,7 +3,7 @@ const { isEmail } = require('validator');
 
 const userSchema = new mongoose.Schema({
   email: {
-    String,
+    type: String,
     unique: true,
     required: true,
     minlength: 2,
@@ -11,19 +11,19 @@ const userSchema = new mongoose.Schema({
     validate: [isEmail, 'Invalid email'],
   },
   password: {
-    String,
+    type: String,
     required: true,
     minlength: 8,
     maxlength: 30,
     select: false,
   },
   name: {
-    String,
+    type: String,
     unique: true,
     required: true,
     minlength: 2,
     maxlength: 30,
-  }
+  },
 });
 
 module.exports = mongoose.model('user', userSchema);
