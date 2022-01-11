@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const { signup } = require('./controllers/users');
 const { validateSignup } = require('./middlewares/validateUsers');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 // connect DB
 mongoose.connect('mongodb://localhost:27017/news-explorer');
@@ -14,17 +15,16 @@ const { PORT = 3000 } = process.env;
 // need to create app variable
 const app = express();
 
-// helmet - security
-app.use(helmet());
-
-// parse incoming requests with JSON
-app.use(express.json());
+app.use(helmet());        // helmet - security
+app.use(express.json());  // parse incoming requests with JSON
+app.use(requestLogger);
 
 app.post('/signup', validateSignup, signup);
 
-// error handlers
-app.use(errors());
+app.use(errorLogger);
+app.use(errors());        // celebrate error handler
 
+// centralized error handling
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   res
@@ -35,7 +35,6 @@ app.use((err, req, res, next) => {
         : message,
     });
 });
-
 
 // need to listen on a port
 app.listen(PORT, () => {
