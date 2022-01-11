@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const { errors } = require('celebrate');
 const { signup } = require('./controllers/users');
 const { validateSignup } = require('./middlewares/validateUsers');
 
@@ -16,6 +17,21 @@ const app = express();
 app.use(express.json());
 
 app.post('/signup', validateSignup, signup);
+
+// error handlers
+app.use(errors());
+
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message } = err;
+  res
+    .status(statusCode)
+    .send({
+      message: statusCode === 500
+        ? 'An error occured on the server'
+        : message,
+    });
+});
+
 
 // need to listen on a port
 app.listen(PORT, () => {

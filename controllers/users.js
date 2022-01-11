@@ -1,5 +1,6 @@
 const Users = require('../models/user');
 const bcrypt = require('bcryptjs');
+const ErrorManager = require('../errors/ErrorManager');
 
 module.exports.signup = (req, res, next) => {
   const { email, password, name } = req.body;
@@ -10,8 +11,12 @@ module.exports.signup = (req, res, next) => {
       res.status(201).send({ email: user.email, name: user.name })
     })
     .catch((err) => {
-      console.log(`name: ${err.name}`);
-      console.log(`message: ${err.message}`);
-      res.send({ err: err.message });
+      // celebrate should catch 400 errors
+      if (err.name === 'MongoServerError'){
+        next(new ErrorManager(409, 'Signup failed. Email or username already registered'));
+      }
+      else {
+        next(new ErrorManager(500));
+      }
     });
 }

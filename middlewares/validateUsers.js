@@ -5,7 +5,7 @@ const validateEmail = (value, helpers) => {
   if (isEmail(value)) {
     return value;
   }
-  return helpers.error();
+  return helpers.error('string.email');
 }
 
 module.exports.validateSignup = celebrate({
