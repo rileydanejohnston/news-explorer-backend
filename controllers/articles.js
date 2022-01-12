@@ -13,7 +13,8 @@ module.exports.saveArticle = (req, res, next) => {
     image: article.urlToImg,
     owner: req.user._id,
    })
-    .then(({ keyword, title, text, date, source, link, image, owner }) => res.status(201).send({
+    .then(({ _id, keyword, title, text, date, source, link, image, owner }) => res.status(201).send({
+      _id,
       keyword,
       title,
       text,
