@@ -2,6 +2,7 @@ const Users = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const ErrorManager = require('../errors/ErrorManager');
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.signin = (req, res, next) => {
   const { email, password } = req.body;
@@ -21,7 +22,7 @@ module.exports.signin = (req, res, next) => {
       // create a token with the user's id in there
       const token = jwt.sign(
         { _id: matched._id },
-        'some-secret-key',
+        NODE_ENV === 'production' ? JWT_SECRET : 'superman-key',
         { expiresIn: '7d' }
       );
 
