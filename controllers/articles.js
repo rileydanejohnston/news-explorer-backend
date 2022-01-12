@@ -24,7 +24,5 @@ module.exports.saveArticle = (req, res, next) => {
       image,
       owner
     }))
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch(next);
 }
