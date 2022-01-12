@@ -4,6 +4,20 @@ const jwt = require('jsonwebtoken');
 const ErrorManager = require('../errors/ErrorManager');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
+module.exports.getCurrentUser = (req, res, next) => {
+  const { _id } = req.user;
+
+  Users.findById(_id)
+    .orFail(new ErrorManager(404, 'User not found'))
+    .then((user) => {
+      res.status(200).send({
+        email: user.email,
+        name: user.name
+       });
+    })
+    .catch(next);
+}
+
 module.exports.signin = (req, res, next) => {
   const { email, password } = req.body;
 
@@ -12,21 +26,23 @@ module.exports.signin = (req, res, next) => {
     // throw error if email not found
     .orFail(new ErrorManager(404, 'Sign in failed. Email was not found.'))
     .then((user) => {
-      return bcrypt.compare(password, user.password);
+      return bcrypt.compare(password, user.password)
+        .then((matched) => {
+          // password didn't match
+          if (!matched) {
+            return Promise.reject(new ErrorManager(401, 'Sign in failed. Password is incorrect.'));
+          }
+          return user;
+        })
     })
-    .then((matched) => {
-      // password didn't match
-      if (!matched) {
-        return Promise.reject(new ErrorManager(401, 'Sign in failed. Password is incorrect.'));
-      }
+    .then((user) => {
       // create a token with the user's id in there
       const token = jwt.sign(
-        { _id: matched._id },
+        { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'superman-key',
         { expiresIn: '7d' }
       );
-
-      res.status(200).send({ token });
+      res.send({ token });
     })
     .catch((next));
 }
