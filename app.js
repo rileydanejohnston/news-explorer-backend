@@ -3,6 +3,7 @@ const express = require('express');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+const { auth } = require('./middlewares/auth');
 const { signup, signin } = require('./controllers/users');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const {
@@ -25,6 +26,8 @@ app.use(requestLogger);
 
 app.post('/signup', validateSignup, signup);
 app.post('/signin', validateSignin, signin);
+
+app.use(auth);
 
 app.use(errorLogger);
 app.use(errors());        // celebrate error handler
