@@ -1,5 +1,12 @@
 const Articles = require('../models/article');
 
+module.exports.getArticles = (req, res, next) => {
+  Articles.find({})
+    .then((articles) => res.status(200).send(articles))
+    .catch(next);
+    //new ErrorManager(404, 'Failed to return articles. No articles have been saved.')
+}
+
 module.exports.saveArticle = (req, res, next) => {
   const { article } = req.body;
 

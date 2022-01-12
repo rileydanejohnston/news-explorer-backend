@@ -6,7 +6,7 @@ module.exports.auth = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    throw new ErrorManager(403, 'authorization failed. Request does not have an authorization header.');
+    throw new ErrorManager(403, 'Authorization failed. Request does not have an authorization header.');
   }
 
   const token = authorization.replace('Bearer ', '');
@@ -21,6 +21,9 @@ module.exports.auth = (req, res, next) => {
   catch(err) {
     console.log(err.name);
     console.log(err.message);
+    if (err.name === 'JsonWebTokenError') {
+      next(new ErrorManager(403, 'Authorization failed. Invalid authorization credentials.'));
+    }
     next(err);
   }
 
