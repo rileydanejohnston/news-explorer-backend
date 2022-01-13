@@ -52,5 +52,4 @@ module.exports.deleteArticle = (req, res, next) => {
     // frontend matches id and removes it from saved
     .then((article) => res.status(200).send({ _id: article._id }))
     .catch(next);
-
 }

@@ -8,6 +8,12 @@ const validateURL = (value, helpers) => {
   return helpers.error('string.uri');
 }
 
+module.exports.validateDelete = celebrate({
+  params: Joi.object().keys({
+    articleId: Joi.string().required().min(20).max(30),
+  })
+})
+
 module.exports.validateSave = celebrate({
   body: Joi.object().keys({
     article: {

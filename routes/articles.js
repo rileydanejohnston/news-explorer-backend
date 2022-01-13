@@ -4,10 +4,13 @@ const {
   getArticles,
   deleteArticle,
 } = require('../controllers/articles');
-const { validateSave } = require('../middlewares/validateArticles');
+const {
+  validateSave,
+  validateDelete,
+} = require('../middlewares/validateArticles');
 
 router.get('/', getArticles);
 router.post('/', validateSave, saveArticle);
-router.delete('/:articleId', deleteArticle);
+router.delete('/:articleId', validateDelete, deleteArticle);
 
 module.exports = router;
