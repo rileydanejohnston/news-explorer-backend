@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const { errors } = require('celebrate');
 const { auth } = require('./middlewares/auth');
 const userRouter = require('./routes/users');
@@ -25,6 +26,8 @@ const app = express();
 app.use(helmet());        // helmet - security
 app.use(express.json());  // parse incoming requests with JSON
 app.use(requestLogger);
+app.use(cors());
+app.options('*', cors());
 
 app.post('/signup', validateSignup, signup);
 app.post('/signin', validateSignin, signin);
