@@ -61,8 +61,6 @@ module.exports.signup = (req, res, next) => {
       if (err.name === 'MongoServerError'){
         next(new ErrorManager(409, 'Signup failed. Email or username already registered'));
       }
-      else {
-        next(new ErrorManager(500));
-      }
+      next();
     });
 }
