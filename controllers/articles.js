@@ -44,7 +44,7 @@ module.exports.deleteArticle = (req, res, next) => {
   const { _id } = req.user;
 
   Articles.findById(articleId).select('+owner')
-    .orFail(new ErrorManager(404, 'Delete article failed. The article was not found.'))
+    .orFail(new ErrorManager(404, 'Delete article failed. The article was not found or the ID is invalid.'))
     .then((article) => {
       if (article.owner.toString() !== _id) {
         return Promise.reject(new ErrorManager(403, 'Delete article failed. The article is not yours to delete.'));
