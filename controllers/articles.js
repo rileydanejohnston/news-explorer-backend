@@ -2,8 +2,12 @@ const Articles = require('../models/article');
 const ErrorManager = require('../errors/ErrorManager');
 
 module.exports.getArticles = (req, res, next) => {
-  Articles.find({})
-    .then((articles) => res.status(200).send(articles))
+  const { _id } = req.user;
+
+  Articles.find({ owner: _id }).select('+owner')
+    .then((articles) => {
+      res.status(200).send(articles);
+    })
     .catch(next);
     //new ErrorManager(404, 'Failed to return articles. No articles have been saved.')
 }
