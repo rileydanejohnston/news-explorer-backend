@@ -12,8 +12,7 @@ module.exports.getCurrentUser = (req, res, next) => {
     .then((user) => {
       res.status(200).send({
         email: user.email,
-        name: user.name,
-        _id: user._id
+        name: user.name
        });
     })
     .catch(next);
