@@ -37,5 +37,8 @@
     "mongoose": "^6.1.6",
     "validator": "^13.7.0",
     "winston": "^3.4.0"
+  },
+  "engines": {
+    "node": "14.x"
   }
 }
