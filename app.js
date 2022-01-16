@@ -6,15 +6,8 @@ const rateLimit = require('express-rate-limit');
 const ErrorManager = require('./errors/ErrorManager');
 const cors = require('cors');
 const { errors } = require('celebrate');
-const { auth } = require('./middlewares/auth');
-const userRouter = require('./routes/users');
-const articleRouter = require('./routes/articles');
-const { signup, signin } = require('./controllers/users');
+const mainRouter = require('./routes/index');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const {
-  validateSignup,
-  validateSignin,
-} = require('./middlewares/validateUsers');
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -37,12 +30,7 @@ app.use(cors());
 app.options('*', cors());
 app.use(limiter);
 
-app.post('/signup', validateSignup, signup);
-app.post('/signin', validateSignin, signin);
-
-app.use(auth);
-app.use('/users', userRouter);
-app.use('/articles', articleRouter);
+app.use(mainRouter);      // ALL ROUTES
 
 app.use(errorLogger);
 app.use(errors());        // celebrate error handler
