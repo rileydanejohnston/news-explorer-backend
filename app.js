@@ -3,6 +3,7 @@ const express = require('express');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const rateLimit = require('express-rate-limit');
+const ErrorManager = require('./errors/ErrorManager');
 const cors = require('cors');
 const { errors } = require('celebrate');
 const { auth } = require('./middlewares/auth');
@@ -45,6 +46,10 @@ app.use('/articles', articleRouter);
 
 app.use(errorLogger);
 app.use(errors());        // celebrate error handler
+
+app.get('*', (req, res, next) => {
+  next(new ErrorManager(404, 'Requested resource not found'));
+});
 
 // centralized error handling
 app.use((err, req, res, next) => {
