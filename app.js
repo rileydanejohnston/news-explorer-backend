@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
+const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const { errors } = require('celebrate');
 const { auth } = require('./middlewares/auth');
@@ -13,6 +14,11 @@ const {
   validateSignup,
   validateSignin,
 } = require('./middlewares/validateUsers');
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+});
 
 // connect DB
 mongoose.connect('mongodb://localhost:27017/news-explorer');
@@ -28,6 +34,7 @@ app.use(express.json());  // parse incoming requests with JSON
 app.use(requestLogger);
 app.use(cors());
 app.options('*', cors());
+app.use(limiter);
 
 app.post('/signup', validateSignup, signup);
 app.post('/signin', validateSignin, signin);
