@@ -2,18 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
-const rateLimit = require('express-rate-limit');
+const limiter = require('./middlewares/limiter');
 const ErrorManager = require('./errors/ErrorManager');
 const cors = require('cors');
 const { errors } = require('celebrate');
 const mainRouter = require('./routes/index');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { MONGO_URL } = process.env;
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-});
 
 // connect DB
 mongoose.connect(MONGO_URL);
