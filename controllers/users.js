@@ -3,12 +3,18 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const ErrorManager = require('../errors/ErrorManager');
 const { NODE_ENV, JWT_SECRET, JWT_DEV } = process.env;
+const {
+  getUser404,
+  signin401,
+  signin404,
+  signin409,
+} = require('../constants/errors');
 
 module.exports.getCurrentUser = (req, res, next) => {
   const { _id } = req.user;
 
   Users.findById(_id)
-    .orFail(new ErrorManager(404, 'User not found'))
+    .orFail(new ErrorManager(404, getUser404))
     .then((user) => {
       res.status(200).send({
         email: user.email,
@@ -24,13 +30,13 @@ module.exports.signin = (req, res, next) => {
   // search for email -> return password
   Users.findOne({ email }).select('+password')
     // throw error if email not found
-    .orFail(new ErrorManager(404, 'Sign in failed. Email was not found.'))
+    .orFail(new ErrorManager(404, signin404))
     .then((user) => {
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           // password didn't match
           if (!matched) {
-            return Promise.reject(new ErrorManager(401, 'Sign in failed. Password is incorrect.'));
+            return Promise.reject(new ErrorManager(401, signin401));
           }
           return user;
         })
@@ -58,7 +64,7 @@ module.exports.signup = (req, res, next) => {
     .catch((err) => {
       // celebrate should catch 400 errors
       if (err.name === 'MongoServerError'){
-        next(new ErrorManager(409, 'Signup failed. Email or username already registered'));
+        next(new ErrorManager(409, signin409));
       }
       next();
     });
