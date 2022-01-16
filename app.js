@@ -2,12 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
-const limiter = require('./middlewares/limiter');
-const ErrorManager = require('./errors/ErrorManager');
 const cors = require('cors');
 const { errors } = require('celebrate');
+const limiter = require('./middlewares/limiter');
+const ErrorManager = require('./errors/ErrorManager');
 const mainRouter = require('./routes/index');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+
 const { MONGO_URL } = process.env;
 
 // connect DB
@@ -19,17 +20,17 @@ const { PORT = 3000 } = process.env;
 // need to create app variable
 const app = express();
 
-app.use(helmet());        // helmet - security
-app.use(express.json());  // parse incoming requests with JSON
+app.use(helmet()); // helmet - security
+app.use(express.json()); // parse incoming requests with JSON
 app.use(requestLogger);
 app.use(cors());
 app.options('*', cors());
 app.use(limiter);
 
-app.use(mainRouter);      // ALL ROUTES
+app.use(mainRouter); // ALL ROUTES
 
 app.use(errorLogger);
-app.use(errors());        // celebrate error handler
+app.use(errors()); // celebrate error handler
 
 app.get('*', (req, res, next) => {
   next(new ErrorManager(404, 'Requested resource not found'));
@@ -48,6 +49,4 @@ app.use((err, req, res, next) => {
 });
 
 // need to listen on a port
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});
+app.listen(PORT);

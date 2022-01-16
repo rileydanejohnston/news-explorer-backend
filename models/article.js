@@ -5,33 +5,33 @@ const Users = require('./user');
 const articleSchema = mongoose.Schema({
   keyword: {
     type: String,
-    required: true
+    required: true,
   },
   title: {
     type: String,
-    required: true
+    required: true,
   },
   text: {
     type: String,
-    required: true
+    required: true,
   },
   date: {
     type: String,
-    required: true
+    required: true,
   },
   source: {
     type: String,
-    required: true
+    required: true,
   },
   link: {
     type: String,
     required: true,
-    validate: [isURL, 'Invalid URL']
+    validate: [isURL, 'Invalid URL'],
   },
   image: {
     type: String,
     required: true,
-    validate: [isURL, 'Invalid URL']
+    validate: [isURL, 'Invalid URL'],
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,

@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const ErrorManager = require('../errors/ErrorManager');
+
 const { NODE_ENV, JWT_SECRET, JWT_DEV } = process.env;
 const {
   noHeader403,
@@ -19,12 +20,9 @@ module.exports.auth = (req, res, next) => {
   try {
     payload = jwt.verify(
       token,
-      NODE_ENV === 'production' ? JWT_SECRET : JWT_DEV
+      NODE_ENV === 'production' ? JWT_SECRET : JWT_DEV,
     );
-  }
-  catch(err) {
-    console.log(err.name);
-    console.log(err.message);
+  } catch (err) {
     if (err.name === 'JsonWebTokenError') {
       next(new ErrorManager(403, badCredentials403));
     }
@@ -33,4 +31,4 @@ module.exports.auth = (req, res, next) => {
 
   req.user = payload;
   next();
-}
+};

@@ -21,4 +21,4 @@ module.exports = {
   signin409,
   noHeader403,
   badCredentials403,
-}
+};

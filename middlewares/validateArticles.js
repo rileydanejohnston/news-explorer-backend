@@ -6,13 +6,13 @@ const validateURL = (value, helpers) => {
     return value;
   }
   return helpers.error('string.uri');
-}
+};
 
 module.exports.validateDelete = celebrate({
   params: Joi.object().keys({
     articleId: Joi.string().required().min(20).max(30),
-  })
-})
+  }),
+});
 
 module.exports.validateSave = celebrate({
   body: Joi.object().keys({
@@ -24,6 +24,6 @@ module.exports.validateSave = celebrate({
       source: Joi.string().required(),
       url: Joi.string().required().custom(validateURL),
       urlToImg: Joi.string().required().custom(validateURL),
-    }
+    },
   }),
 });

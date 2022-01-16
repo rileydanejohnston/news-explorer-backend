@@ -13,8 +13,8 @@ module.exports.getArticles = (req, res, next) => {
       res.status(200).send(articles);
     })
     .catch(next);
-    //new ErrorManager(404, 'Failed to return articles. No articles have been saved.')
-}
+  // new ErrorManager(404, 'Failed to return articles. No articles have been saved.')
+};
 
 module.exports.saveArticle = (req, res, next) => {
   const { article } = req.body;
@@ -28,8 +28,10 @@ module.exports.saveArticle = (req, res, next) => {
     link: article.url,
     image: article.urlToImg,
     owner: req.user._id,
-   })
-    .then(({ _id, keyword, title, text, date, source, link, image, owner }) => res.status(201).send({
+  })
+    .then(({
+      _id, keyword, title, text, date, source, link, image, owner,
+    }) => res.status(201).send({
       _id,
       keyword,
       title,
@@ -38,10 +40,10 @@ module.exports.saveArticle = (req, res, next) => {
       source,
       link,
       image,
-      owner
+      owner,
     }))
     .catch(next);
-}
+};
 
 module.exports.deleteArticle = (req, res, next) => {
   const { articleId } = req.params;
@@ -60,4 +62,4 @@ module.exports.deleteArticle = (req, res, next) => {
     // frontend matches id and removes it from saved
     .then((article) => res.status(200).send({ _id: article._id }))
     .catch(next);
-}
+};
