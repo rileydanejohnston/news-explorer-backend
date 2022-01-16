@@ -8,6 +8,10 @@ const signin401 = 'Sign in failed. Password is incorrect.';
 const signin404 = 'Sign in failed. Email was not found.';
 const signin409 = 'Signup failed. Email or username already registered';
 
+// AUTH ERRORS
+const noHeader403 = 'Authorization failed. Request does not have an authorization header.';
+const badCredentials403 = 'Authorization failed. Invalid authorization credentials.';
+
 module.exports = {
   article403,
   article404,
@@ -15,4 +19,6 @@ module.exports = {
   signin401,
   signin404,
   signin409,
+  noHeader403,
+  badCredentials403,
 }
