@@ -1,5 +1,9 @@
 const Articles = require('../models/article');
 const ErrorManager = require('../errors/ErrorManager');
+const {
+  article403,
+  article404,
+} = require('../constants/errors');
 
 module.exports.getArticles = (req, res, next) => {
   const { _id } = req.user;
@@ -44,10 +48,10 @@ module.exports.deleteArticle = (req, res, next) => {
   const { _id } = req.user;
 
   Articles.findById(articleId).select('+owner')
-    .orFail(new ErrorManager(404, 'Delete article failed. The article was not found or the ID is invalid.'))
+    .orFail(new ErrorManager(404, article404))
     .then((article) => {
       if (article.owner.toString() !== _id) {
-        return Promise.reject(new ErrorManager(403, 'Delete article failed. The article is not yours to delete.'));
+        return Promise.reject(new ErrorManager(403, article403));
       }
 
       return Articles.findByIdAndDelete(article._id);
