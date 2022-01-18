@@ -10,7 +10,7 @@ const mainRouter = require('./routes/index');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { centralErrorHandler } = require('./errors/centralErrorHandler');
 
-const { MONGO_URL } = process.env;
+const { MONGO_URL = 'mongodb://localhost/news-explorer' } = process.env;
 
 // connect DB
 mongoose.connect(MONGO_URL);
