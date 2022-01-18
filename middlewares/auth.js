@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 const ErrorManager = require('../errors/ErrorManager');
 
-const { NODE_ENV, JWT_SECRET, JWT_DEV } = process.env;
+const { NODE_ENV, JWT_SECRET } = process.env;
+const JWT_DEV = require('../config');
 const {
   noHeader403,
   badCredentials403,

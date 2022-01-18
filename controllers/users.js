@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 const Users = require('../models/user');
 const ErrorManager = require('../errors/ErrorManager');
 
-const { NODE_ENV, JWT_SECRET, JWT_DEV } = process.env;
+const { NODE_ENV, JWT_SECRET } = process.env;
+const JWT_DEV = require('../config');
 const {
   getUser404,
   signin401,
