@@ -7,7 +7,6 @@ const { NODE_ENV, JWT_SECRET, JWT_DEV } = process.env;
 const {
   getUser404,
   signin401,
-  signin404,
   signin409,
 } = require('../constants/errors');
 
@@ -31,7 +30,7 @@ module.exports.signin = (req, res, next) => {
   // search for email -> return password
   Users.findOne({ email }).select('+password')
     // throw error if email not found
-    .orFail(new ErrorManager(404, signin404))
+    .orFail(new ErrorManager(401, signin401))
     .then((user) => bcrypt.compare(password, user.password)
       .then((matched) => {
         // password didn't match
