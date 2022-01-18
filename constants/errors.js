@@ -4,7 +4,7 @@ const article404 = 'Delete article failed. The article was not found or the ID i
 
 // USER ERRORS
 const getUser404 = 'Get user failed. User not found.';
-const signin401 = 'Sign in failed due to invalid credentials. Incorrect email or password.';
+const signin401 = 'Sign in failed. Incorrect email or password.';
 const signin409 = 'Signup failed. Email or username already registered';
 
 // AUTH ERRORS

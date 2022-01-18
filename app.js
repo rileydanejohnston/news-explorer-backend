@@ -8,6 +8,7 @@ const limiter = require('./middlewares/limiter');
 const ErrorManager = require('./errors/ErrorManager');
 const mainRouter = require('./routes/index');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { centralErrorHandler } = require('./errors/centralErrorHandler');
 
 const { MONGO_URL } = process.env;
 
@@ -37,16 +38,7 @@ app.get('*', (req, res, next) => {
 });
 
 // centralized error handling
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-  res
-    .status(statusCode)
-    .send({
-      message: statusCode === 500
-        ? 'An error occured on the server'
-        : message,
-    });
-});
+app.use(centralErrorHandler);
 
 // need to listen on a port
 app.listen(PORT);
