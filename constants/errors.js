@@ -4,8 +4,7 @@ const article404 = 'Delete article failed. The article was not found or the ID i
 
 // USER ERRORS
 const getUser404 = 'Get user failed. User not found.';
-const signin401 = 'Sign in failed. Password is incorrect.';
-const signin404 = 'Sign in failed. Email was not found.';
+const signin401 = 'Sign in failed. Incorrect email or password.';
 const signin409 = 'Signup failed. Email or username already registered';
 
 // AUTH ERRORS
@@ -17,7 +16,6 @@ module.exports = {
   article404,
   getUser404,
   signin401,
-  signin404,
   signin409,
   noHeader403,
   badCredentials403,
