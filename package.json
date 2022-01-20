@@ -1,0 +1,44 @@
+{
+  "name": "news-explorer-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rileydanejohnston/news-explorer-backend.git"
+  },
+  "author": "Riley Johnston",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rileydanejohnston/news-explorer-backend/issues"
+  },
+  "homepage": "https://github.com/rileydanejohnston/news-explorer-backend#readme",
+  "devDependencies": {
+    "eslint": "^8.6.0",
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "celebrate": "^15.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^11.0.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "express": "^4.17.2",
+    "express-rate-limit": "^6.1.0",
+    "express-winston": "^4.2.0",
+    "helmet": "^5.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.1.6",
+    "validator": "^13.7.0",
+    "winston": "^3.4.0"
+  },
+  "engines": {
+    "node": "14.x"
+  }
+}
