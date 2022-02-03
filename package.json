@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "nodemon app.js",
     "start": "node app.js"
   },
@@ -20,7 +20,9 @@
   "homepage": "https://github.com/rileydanejohnston/news-explorer-backend#readme",
   "devDependencies": {
     "eslint": "^8.6.0",
-    "nodemon": "^2.0.15"
+    "jest": "^27.4.7",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.2"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
