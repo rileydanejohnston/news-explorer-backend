@@ -7,7 +7,6 @@ const {
   validSignup,
   badEmailSignup,
   badPasswordSignup,
-  badNameSignup,
   noEmailSignup,
   noPasswordSignup,
   noNameSignup
@@ -16,7 +15,7 @@ const {
 const request = supertest(app);
 
 // create a test suite for HTTP requests
-describe('test API requests', () => {
+describe('/signup requests', () => {
 
   beforeAll(() => {
     mongoose.connect(MONGO_URL);
@@ -73,7 +72,11 @@ describe('test API requests', () => {
     });
   })
 
-  /* test('test bad email validation for /signup', () => {
-    return
-  }) */
+  test('missing username to /signup returns 400 status & username required message', () => {
+    return request.post('/signup').send(noNameSignup)
+    .then((response) => {
+      expect(response.status).toBe(400);
+      expect(response.body.validation.body.message).toBe("\"name\" is required");
+    });
+  })
 })

@@ -15,12 +15,6 @@ const badPasswordSignup = {
   name: 'validEmail'
 }
 
-const badNameSignup = {
-  email: 'validEmail@gmail.com',
-  password: 'superstrongpassword',
-  name: 'val'
-}
-
 const noEmailSignup = {
   password: 'superstrongpassword',
   name: 'validEmail'
@@ -39,7 +33,6 @@ module.exports = {
   validSignup,
   badEmailSignup,
   badPasswordSignup,
-  badNameSignup,
   noEmailSignup,
   noPasswordSignup,
   noNameSignup
