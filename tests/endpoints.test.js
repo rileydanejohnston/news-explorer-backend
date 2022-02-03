@@ -57,6 +57,22 @@ describe('test API requests', () => {
     });
   })
 
+  test('short password to /signup returns 400 status & short password message', () => {
+    return request.post('/signup').send(badPasswordSignup)
+      .then((response) => {
+        expect(response.status).toBe(400);
+        expect(response.body.validation.body.message).toBe("\"password\" length must be at least 8 characters long");
+      });
+  })
+
+  test('missing password to /signup returns 400 status & password required message', () => {
+    return request.post('/signup').send(noPasswordSignup)
+    .then((response) => {
+      expect(response.status).toBe(400);
+      expect(response.body.validation.body.message).toBe("\"password\" is required");
+    });
+  })
+
   /* test('test bad email validation for /signup', () => {
     return
   }) */
