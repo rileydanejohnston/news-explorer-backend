@@ -22,11 +22,11 @@ describe('/signup requests', () => {
   })
 
   afterAll(() => {
-    mongoose.disconnect();
+    return User.deleteOne({ email: validSignup.email });
   })
 
-  afterEach(() => {
-    return User.deleteOne({ email: validSignup.email });
+  afterAll(() => {
+    mongoose.disconnect();
   })
 
   test('valid data to /signup returns 201 status & email/username', () => {
@@ -36,6 +36,15 @@ describe('/signup requests', () => {
         expect(response.status).toBe(201);
         expect(response.body.email).toBe(validSignup.email);
         expect(response.body.name).toBe(validSignup.name);
+      });
+  })
+
+  test('duplicate email to /signup returns 409 status & email already registered message', () => {
+    // make a request for something
+    return request.post('/signup').send(validSignup)
+      .then((response) => {
+        expect(response.status).toBe(409);
+        expect(response.body.message).toBe('Signup failed. Email or username already registered');
       });
   })
 
