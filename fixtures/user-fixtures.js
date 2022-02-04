@@ -4,6 +4,11 @@ const validSignup = {
   name: 'validEmail'
 };
 
+const validSignin = {
+  email: 'validEmail@gmail.com',
+  password: 'superstrongpassword',
+}
+
 const badEmailSignup = {
   email: 'validEmailgmail.com',
   password: 'superstrongpassword',
@@ -29,11 +34,18 @@ const noNameSignup = {
   password: 'superstrongpassword',
 }
 
+// . matches any character that's not a line terminator
+// {150, } means 150 digits, etc
+// g is the global flag, finds all matches in the text, not the first
+const tokenRegex = /.{150,}/g;
+
 module.exports = {
   validSignup,
+  validSignin,
   badEmailSignup,
   badPasswordSignup,
   noEmailSignup,
   noPasswordSignup,
-  noNameSignup
+  noNameSignup,
+  tokenRegex,
 }

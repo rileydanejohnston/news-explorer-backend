@@ -5,28 +5,28 @@ const User = require('../models/user');
 const { MONGO_URL } = process.env;
 const {
   validSignup,
+  validSignin,
   badEmailSignup,
   badPasswordSignup,
   noEmailSignup,
   noPasswordSignup,
-  noNameSignup
+  noNameSignup,
+  tokenRegex
  } = require('../fixtures/user-fixtures');
 
 const request = supertest(app);
 
-// create a test suite for HTTP requests
-describe('/signup requests', () => {
+beforeAll(() => {
+  mongoose.connect(MONGO_URL);
+})
+afterAll(() => {
+  mongoose.disconnect();
+})
 
-  beforeAll(() => {
-    mongoose.connect(MONGO_URL);
-  })
+describe('/signup requests', () => {
 
   afterAll(() => {
     return User.deleteOne({ email: validSignup.email });
-  })
-
-  afterAll(() => {
-    mongoose.disconnect();
   })
 
   test('valid data to /signup returns 201 status & email/username', () => {
@@ -87,5 +87,28 @@ describe('/signup requests', () => {
       expect(response.status).toBe(400);
       expect(response.body.validation.body.message).toBe("\"name\" is required");
     });
+  })
+})
+
+describe('/signin requests', () => {
+
+  beforeAll(() => {
+    // must use request.post for hash
+    // User.create() won't hash the password
+    return request.post('/signup').send(validSignup);
+  })
+
+  afterAll(() => {
+    return User.deleteOne({ email: validSignup.email });
+  })
+
+
+  test('valid request to /signin returns 200 status & token', () => {
+    return request.post('/signin').send(validSignin)
+      .then((response) => {
+        expect(response.status).toBe(200);
+        expect(response.body.hasOwnProperty('token')).toBeTruthy();
+        expect(response.body.token).toMatch(tokenRegex);
+      })
   })
 })
