@@ -27,8 +27,8 @@ afterAll(() => {
 })
 
 describe('/signup requests', () => {
-  afterAll(() => {
-    return User.deleteOne({ email: validSignup.email });
+  afterEach(() => {
+    return User.deleteMany({});
   })
 
   test('valid data to /signup returns 201 status & email/username', () => {
@@ -41,11 +41,19 @@ describe('/signup requests', () => {
   })
 
   test('duplicate email to /signup returns 409 status & email already registered message', () => {
-    return request.post('/signup').send(validSignup)
-      .then((response) => {
-        expect(response.status).toBe(409);
-        expect(response.body.message).toBe('Signup failed. Email or username already registered');
-      });
+    // create user
+    async () => {
+      const response = await request.post('/signup').send(validSignup);
+
+      expect(response.status).toBe(201);
+    }
+
+    // try creating duplicate user
+    async () => {
+      const response = await request.post('/signup').send(validSignup);
+
+      expect(response.status).toBe(409);
+    }
   })
 
   // TESTING JOI/CELEBRATE VALIDATION
