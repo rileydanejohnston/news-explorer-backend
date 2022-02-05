@@ -99,13 +99,13 @@ describe('/signup requests', () => {
 })
 
 describe('/signin requests', () => {
-  beforeAll(() => {
+  beforeEach(() => {
     // must use request.post for hash
     // User.create() won't hash the password
     return request.post('/signup').send(validSignup);
   })
 
-  afterAll(() => {
+  afterEach(() => {
     return User.deleteMany({});
   })
 
