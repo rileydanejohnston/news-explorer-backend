@@ -21,6 +21,7 @@ const request = supertest(app);
 beforeAll(() => {
   mongoose.connect(MONGO_URL);
 })
+
 afterAll(() => {
   mongoose.disconnect();
 })
@@ -31,7 +32,6 @@ describe('/signup requests', () => {
   })
 
   test('valid data to /signup returns 201 status & email/username', () => {
-    // make a request for something
     return request.post('/signup').send(validSignup)
       .then((response) => {
         expect(response.status).toBe(201);
@@ -41,7 +41,6 @@ describe('/signup requests', () => {
   })
 
   test('duplicate email to /signup returns 409 status & email already registered message', () => {
-    // make a request for something
     return request.post('/signup').send(validSignup)
       .then((response) => {
         expect(response.status).toBe(409);
@@ -99,7 +98,7 @@ describe('/signin requests', () => {
   })
 
   afterAll(() => {
-    return User.deleteOne({ email: validSignup.email });
+    return User.deleteMany({});
   })
 
   test('valid request to /signin returns 200 status & token', () => {

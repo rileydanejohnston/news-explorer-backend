@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "jest",
+    "test": "MONGO_URL=mongodb://localhost:27017/news-explorer-test jest",
     "dev": "nodemon app.js",
     "start": "node app.js"
   },
