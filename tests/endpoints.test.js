@@ -41,20 +41,14 @@ describe('/signup requests', () => {
       });
   })
 
-  test('duplicate email to /signup returns 409 status & email already registered message', () => {
+  test('duplicate email to /signup returns 409 status & email already registered message', async () => {
     // create user
-    async () => {
-      const response = await request.post('/signup').send(validSignup);
-
-      expect(response.status).toBe(201);
-    }
+    const response = await request.post('/signup').send(validSignup);
+    expect(response.status).toBe(201);
 
     // try creating duplicate user
-    async () => {
-      const response = await request.post('/signup').send(validSignup);
-
-      expect(response.status).toBe(409);
-    }
+    const duplicateResponse = await request.post('/signup').send(validSignup);
+    expect(duplicateResponse.status).toBe(409);
   })
 
   // TESTING JOI/CELEBRATE VALIDATION
