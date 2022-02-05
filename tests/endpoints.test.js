@@ -22,7 +22,8 @@ beforeAll(() => {
   mongoose.connect(MONGO_URL);
 })
 
-afterAll(() => {
+afterAll(async () => {
+  await mongoose.connection.db.dropDatabase();
   mongoose.disconnect();
 })
 
