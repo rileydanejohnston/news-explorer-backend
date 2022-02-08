@@ -28,7 +28,7 @@ afterAll(async () => {
 })
 
 describe('/signup requests', () => {
-  afterEach(() => {
+  beforeEach(() => {
     return User.deleteMany({});
   })
 
@@ -94,14 +94,12 @@ describe('/signup requests', () => {
 })
 
 describe('/signin requests', () => {
-  beforeEach(() => {
-    // must use request.post for hash
+  beforeEach(async () => {
+    // must use request.post for password hash
     // User.create() won't hash the password
-    return request.post('/signup').send(validSignup);
-  })
-
-  afterEach(() => {
-    return User.deleteMany({});
+    // clear db before each test, if we clear after and the test fails, the db won't clear
+    await User.deleteMany({});
+    await request.post('/signup').send(validSignup);
   })
 
   test('valid request to /signin returns 200 status & token', () => {
