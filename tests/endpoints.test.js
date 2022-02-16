@@ -202,4 +202,12 @@ describe('/getCurrentUser request', () => {
         expect(response.body.message).toBe(getUser404);
       })
   })
+
+  test('request to /users/me without an authorization header returns 403 status and no header error message', () => {
+    return request.get('/users/me').set('auth', 'Bearer ' + token)
+      .then((response) => {
+        expect(response.status).toBe(403);
+        expect(response.body.message).toBe(noHeader403);
+      })
+  })
 })
