@@ -4,6 +4,13 @@ const supertest = require('supertest');
 const User = require('../models/user');
 const { MONGO_URL } = process.env;
 const {
+  getUser404,
+  signin401,
+  signin409,
+  noHeader403,
+  badCredentials403
+} = require('../constants/errors');
+const {
   validSignup,
   validSignin,
   badEmailSignup,
@@ -49,6 +56,7 @@ describe('/signup requests', () => {
     // try creating duplicate user
     const duplicateResponse = await request.post('/signup').send(validSignup);
     expect(duplicateResponse.status).toBe(409);
+    expect(duplicateResponse.body.message).toBe(signin409);
   })
 
   // TESTING JOI/CELEBRATE VALIDATION
@@ -132,7 +140,7 @@ describe('/signin requests', () => {
     return request.post('/signin').send(wrongEmailSignin)
       .then((response) => {
         expect(response.status).toBe(401);
-        expect(response.body.message).toBe('Sign in failed. Incorrect email or password.');
+        expect(response.body.message).toBe(signin401);
       })
   })
 
@@ -156,7 +164,7 @@ describe('/signin requests', () => {
     return request.post('/signin').send(wrongPasswordSignin)
       .then((response) => {
         expect(response.status).toBe(401);
-        expect(response.body.message).toBe('Sign in failed. Incorrect email or password.');
+        expect(response.body.message).toBe(signin401);
       })
   })
 })
