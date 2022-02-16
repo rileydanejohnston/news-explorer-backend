@@ -195,7 +195,7 @@ describe('/getCurrentUser request', () => {
       })
   })
 
-  test('request to /users/me for unknown user returns 404 status & user not found message', () => {
+  test('request to /users/me with valid token for a user that doesn\'t exist returns 404 status & user not found message (created a user for a valid token number then deleted user from DB)', () => {
     return request.get('/users/me').set('authorization', 'Bearer ' + badToken)
       .then((response) => {
         expect(response.status).toBe(404);
