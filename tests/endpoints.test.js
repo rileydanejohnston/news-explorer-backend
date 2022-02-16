@@ -20,7 +20,8 @@ const {
   noEmailSignup,
   noPasswordSignup,
   noNameSignup,
-  tokenRegex
+  tokenRegex,
+  badToken
  } = require('../fixtures/user-fixtures');
 
 const request = supertest(app);
@@ -185,12 +186,20 @@ describe('/getCurrentUser request', () => {
     token = response.body.token;
   });
 
-  test('/users/me returns 200 status & object with email and username', () => {
+  test('valid request to /users/me returns 200 status & object with email and username', () => {
     return request.get('/users/me').set('authorization', 'Bearer ' + token)
       .then((response) => {
         expect(response.status).toBe(200);
         expect(response.body.email).toBe(validSignup.email);
         expect(response.body.name).toBe(validSignup.name);
+      })
+  })
+
+  test('request to /users/me for unknown user returns 404 status & user not found message', () => {
+    return request.get('/users/me').set('authorization', 'Bearer ' + badToken)
+      .then((response) => {
+        expect(response.status).toBe(404);
+        expect(response.body.message).toBe(getUser404);
       })
   })
 })
