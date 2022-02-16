@@ -160,3 +160,29 @@ describe('/signin requests', () => {
       })
   })
 })
+
+describe('/getCurrentUser request', () => {
+  let response = null;
+  let token = null;
+
+  // clear DB
+  // signup
+  // signin
+  // extract token
+  beforeAll(async () => {
+    await User.deleteMany({});
+    await request.post('/signup').send(validSignup);
+
+    response = await request.post('/signin').send(validSignin);
+    token = response.body.token;
+  });
+
+  test('/users/me returns 200 status & object with email and username', () => {
+    return request.get('/users/me').set('authorization', 'Bearer ' + token)
+      .then((response) => {
+        expect(response.status).toBe(200);
+        expect(response.body.email).toBe(validSignup.email);
+        expect(response.body.name).toBe(validSignup.name);
+      })
+  })
+})
