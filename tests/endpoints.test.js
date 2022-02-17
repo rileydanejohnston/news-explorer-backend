@@ -23,6 +23,9 @@ const {
   tokenRegex,
   badToken
  } = require('../fixtures/user-fixtures');
+const {
+  validArticle
+} = require('../fixtures/article-fixtures');
 
 const request = supertest(app);
 
@@ -225,5 +228,41 @@ describe('/getCurrentUser request', () => {
         expect(response.status).toBe(403);
         expect(response.body.message).toBe(badCredentials403);
       })
+  })
+})
+
+describe('get articles request to /articles/', () => {
+
+  let response = null;
+  let token = null;
+
+  // clear DB
+  // signup
+  // signin
+  // extract token
+  beforeAll(async () => {
+    await User.deleteMany({});
+    await request.post('/signup').send(validSignup);
+
+    response = await request.post('/signin').send(validSignin);
+    token = response.body.token;
+  });
+
+  test('successful request to /articles/ returns status 200 and an object with the following properties: keyword, title, text, date, source, link, image, owner, _id', async () => {
+    // post a test article
+    const post = await request.post('/articles/').set('authorization', 'Bearer ' + token).send(validArticle);
+
+    const response = await request.get('/articles/').set('authorization', 'Bearer ' + token);
+
+    expect(response.status).toBe(200);
+    expect(response.body.keyword).toBe(validArticle.keyword);
+    expect(response.body.title).toBe(validArticle.title);
+    expect(response.body.text).toBe(validArticle.description);
+    expect(response.body.date).toBe(validArticle.date);
+    expect(response.body.source).toBe(validArticle.source);
+    expect(response.body.link).toBe(validArticle.url);
+    expect(response.body.image).toBe(validArticle.urlToImg);
+    expect(response.body.owner).toBe(post.owner);
+    expect(response.body._id).toBe(post._id);
   })
 })
