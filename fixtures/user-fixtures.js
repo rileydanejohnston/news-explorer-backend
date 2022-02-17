@@ -49,7 +49,9 @@ const noNameSignup = {
 // g is the global flag, finds all matches in the text, not the first
 const tokenRegex = /.{150,}/g;
 
-const badToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjBjNmNiMzk4MGY4M2M1NWMwYTAyMDAiLCJpYXQiOjE2NDQ5ODE0MjcsImV4cCI6MTY0NTU4NjIyN30.XsbRy1XDErOb5B4Two3skdxlmqBTwv9abf8Fw4W_g0Y';
+// valid token number for an unknown user
+// created a user, took the token, deleted user from DB
+const unknownUserToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjBjNmNiMzk4MGY4M2M1NWMwYTAyMDAiLCJpYXQiOjE2NDQ5ODE0MjcsImV4cCI6MTY0NTU4NjIyN30.XsbRy1XDErOb5B4Two3skdxlmqBTwv9abf8Fw4W_g0Y';
 
 module.exports = {
   validSignup,
@@ -62,5 +64,5 @@ module.exports = {
   noPasswordSignup,
   noNameSignup,
   tokenRegex,
-  badToken
+  unknownUserToken
 }

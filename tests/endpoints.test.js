@@ -21,7 +21,7 @@ const {
   noPasswordSignup,
   noNameSignup,
   tokenRegex,
-  badToken
+  unknownUserToken
  } = require('../fixtures/user-fixtures');
 const {
   validArticle
@@ -199,7 +199,7 @@ describe('/getCurrentUser request', () => {
   })
 
   test('request to /users/me with valid token for a user that doesn\'t exist returns 404 status & user not found message (created a user for a valid token number then deleted user from DB)', () => {
-    return request.get('/users/me').set('authorization', 'Bearer ' + badToken)
+    return request.get('/users/me').set('authorization', 'Bearer ' + unknownUserToken)
       .then((response) => {
         expect(response.status).toBe(404);
         expect(response.body.message).toBe(getUser404);
