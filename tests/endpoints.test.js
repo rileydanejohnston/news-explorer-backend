@@ -405,4 +405,30 @@ describe('save articles request to /articles/', () => {
     expect(response.status).toBe(400);
     expect(response.body.validation.body.message).toBe("\"article.urlToImg\" must be a valid uri");
   })
+
+  test('request to /articles/ without an authorization header returns 403 status and no header error message', () => {
+    return request.post('/articles/').set('auth', 'Bearer ' + token)
+      .then((response) => {
+        expect(response.status).toBe(403);
+        expect(response.body.message).toBe(noHeader403);
+        console.log(response.body.message);
+      })
+  })
+
+  test('request to /articles/ without the word `bearer` in the header returns 403 status and no header error message', () => {
+    return request.post('/articles/').set('authorization', token)
+      .then((response) => {
+        expect(response.status).toBe(403);
+        expect(response.body.message).toBe(noHeader403);
+        console.log(response.body.message);
+      })
+  })
+
+  test('request to /articles/ with an invalid token # returns 403 status and bad credentials message', () => {
+    return request.post('/articles/').set('authorization', 'Bearer 5')
+      .then((response) => {
+        expect(response.status).toBe(403);
+        expect(response.body.message).toBe(badCredentials403);
+      })
+  })
 })
