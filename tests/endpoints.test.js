@@ -24,7 +24,14 @@ const {
   unknownUserToken
  } = require('../fixtures/user-fixtures');
 const {
-  validArticle
+  validArticle,
+  noDate,
+  noDescription,
+  noKeyword,
+  noSource,
+  noTitle,
+  noUrl,
+  noUrlToImg
 } = require('../fixtures/article-fixtures');
 const {
   keyword,
@@ -332,5 +339,54 @@ describe('save articles request to /articles/', () => {
     expect(body.image).toBe(urlToImg);
     expect(body.hasOwnProperty('owner')).toBeTruthy();
     expect(body.hasOwnProperty('_id')).toBeTruthy();
+  })
+
+  test('request to /articles/ without DATE property returns 400 status and missing DATE message', async () => {
+    const response = await request.post('/articles/').set('authorization', 'Bearer ' + token).send(noDate);
+
+    expect(response.status).toBe(400);
+    expect(response.body.validation.body.message).toBe("\"article.date\" is required");
+  })
+
+  test('request to /articles/ without DESCRIPTION property returns 400 status and missing DESCRIPTION message', async () => {
+    const response = await request.post('/articles/').set('authorization', 'Bearer ' + token).send(noDescription);
+
+    expect(response.status).toBe(400);
+    expect(response.body.validation.body.message).toBe("\"article.description\" is required");
+  })
+
+  test('request to /articles/ without KEYWORD property returns 400 status and missing KEYWORD message', async () => {
+    const response = await request.post('/articles/').set('authorization', 'Bearer ' + token).send(noKeyword);
+
+    expect(response.status).toBe(400);
+    expect(response.body.validation.body.message).toBe("\"article.keyword\" is required");
+  })
+
+  test('request to /articles/ without SOURCE property returns 400 status and missing SOURCE message', async () => {
+    const response = await request.post('/articles/').set('authorization', 'Bearer ' + token).send(noSource);
+
+    expect(response.status).toBe(400);
+    expect(response.body.validation.body.message).toBe("\"article.source\" is required");
+  })
+
+  test('request to /articles/ without TITLE property returns 400 status and missing TITLE message', async () => {
+    const response = await request.post('/articles/').set('authorization', 'Bearer ' + token).send(noTitle);
+
+    expect(response.status).toBe(400);
+    expect(response.body.validation.body.message).toBe("\"article.title\" is required");
+  })
+
+  test('request to /articles/ without URL property returns 400 status and missing URL message', async () => {
+    const response = await request.post('/articles/').set('authorization', 'Bearer ' + token).send(noUrl);
+
+    expect(response.status).toBe(400);
+    expect(response.body.validation.body.message).toBe("\"article.url\" is required");
+  })
+
+  test('request to /articles/ without URLTOIMG property returns 400 status and missing URLTOIMG message', async () => {
+    const response = await request.post('/articles/').set('authorization', 'Bearer ' + token).send(noUrlToImg);
+
+    expect(response.status).toBe(400);
+    expect(response.body.validation.body.message).toBe("\"article.urlToImg\" is required");
   })
 })
