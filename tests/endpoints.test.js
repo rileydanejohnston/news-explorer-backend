@@ -26,6 +26,15 @@ const {
 const {
   validArticle
 } = require('../fixtures/article-fixtures');
+const {
+  keyword,
+  title,
+  description,
+  date,
+  source,
+  url,
+  urlToImg
+} = validArticle.article;
 
 const request = supertest(app);
 
@@ -253,17 +262,19 @@ describe('get articles request to /articles/', () => {
     const post = await request.post('/articles/').set('authorization', 'Bearer ' + token).send(validArticle);
 
     const response = await request.get('/articles/').set('authorization', 'Bearer ' + token);
+    const { body } = response;
+    const data = body[0];
 
-    expect(response.status).toBe(200);
-    expect(response.body.keyword).toBe(validArticle.keyword);
-    expect(response.body.title).toBe(validArticle.title);
-    expect(response.body.text).toBe(validArticle.description);
-    expect(response.body.date).toBe(validArticle.date);
-    expect(response.body.source).toBe(validArticle.source);
-    expect(response.body.link).toBe(validArticle.url);
-    expect(response.body.image).toBe(validArticle.urlToImg);
-    expect(response.body.owner).toBe(post.owner);
-    expect(response.body._id).toBe(post._id);
+    console.log(data);
+    expect(data.keyword).toBe(keyword);
+    expect(data.title).toBe(title);
+    expect(data.text).toBe(description);
+    expect(data.date).toBe(date);
+    expect(data.source).toBe(source);
+    expect(data.link).toBe(url);
+    expect(data.image).toBe(urlToImg);
+    expect(data.hasOwnProperty('owner')).toBeTruthy();
+    expect(data.hasOwnProperty('_id')).toBeTruthy();
   })
 
   test('request to /articles/ without an authorization header returns 403 status and no header error message', () => {
@@ -294,15 +305,6 @@ describe('get articles request to /articles/', () => {
 describe('save articles request to /articles/', () => {
   let response = null;
   let token = null;
-  const {
-    keyword,
-    title,
-    description,
-    date,
-    source,
-    url,
-    urlToImg
-  } = validArticle.article;
 
   // clear DB
   // signup
