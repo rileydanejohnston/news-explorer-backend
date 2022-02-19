@@ -31,7 +31,9 @@ const {
   noSource,
   noTitle,
   noUrl,
-  noUrlToImg
+  noUrlToImg,
+  invalidUrl,
+  invalidUrlToImg
 } = require('../fixtures/article-fixtures');
 const {
   keyword,
@@ -388,5 +390,19 @@ describe('save articles request to /articles/', () => {
 
     expect(response.status).toBe(400);
     expect(response.body.validation.body.message).toBe("\"article.urlToImg\" is required");
+  })
+
+  test('request to /articles/ with an invalid URL returns 400 status and an invalid uri message', async () => {
+    const response = await request.post('/articles/').set('authorization', 'Bearer ' + token).send(invalidUrl);
+
+    expect(response.status).toBe(400);
+    expect(response.body.validation.body.message).toBe("\"article.url\" must be a valid uri");
+  })
+
+  test('request to /articles/ with an invalid URLTOIMG returns 400 status and an invalid uri message', async () => {
+    const response = await request.post('/articles/').set('authorization', 'Bearer ' + token).send(invalidUrlToImg);
+
+    expect(response.status).toBe(400);
+    expect(response.body.validation.body.message).toBe("\"article.urlToImg\" must be a valid uri");
   })
 })
