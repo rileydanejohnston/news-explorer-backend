@@ -290,3 +290,45 @@ describe('get articles request to /articles/', () => {
       })
   })
 })
+
+describe('save articles request to /articles/', () => {
+  let response = null;
+  let token = null;
+  const {
+    keyword,
+    title,
+    description,
+    date,
+    source,
+    url,
+    urlToImg
+  } = validArticle.article;
+
+  // clear DB
+  // signup
+  // signin
+  // extract token
+  beforeAll(async () => {
+    await User.deleteMany({});
+    await request.post('/signup').send(validSignup);
+
+    response = await request.post('/signin').send(validSignin);
+    token = response.body.token;
+  });
+
+  test('successful post request to /articles/ returns status 201, with the following properties: _id, keyword, title, text, date,source, link, image, owner', async () => {
+    const response = await request.post('/articles/').set('authorization', 'Bearer ' + token).send(validArticle);
+    const { body } = response;
+
+    expect(response.status).toBe(201);
+    expect(body.keyword).toBe(keyword);
+    expect(body.title).toBe(title);
+    expect(body.text).toBe(description);
+    expect(body.date).toBe(date);
+    expect(body.source).toBe(source);
+    expect(body.link).toBe(url);
+    expect(body.image).toBe(urlToImg);
+    expect(body.hasOwnProperty('owner')).toBeTruthy();
+    expect(body.hasOwnProperty('_id')).toBeTruthy();
+  })
+})
